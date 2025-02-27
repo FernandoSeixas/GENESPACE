@@ -1,4 +1,4 @@
-parse_orthologues#' @title Generic internal functions used by genespace
+#' @title Generic internal functions used by genespace
 #' @description
 #' \code{utils} Convience functions for genespace, not meant to be called
 #' directly by the user. Little documentation support provided, use at your own
