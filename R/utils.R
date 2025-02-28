@@ -547,18 +547,21 @@ parse_orthologues <- function(filepath){
   x2[,orthID := 1:.N]
   if (nrow(x2) > 0) {
     x2r <- x2[,list(id1 = unique(strsplit(id1, ",")[[1]])),
-              by = "orthID"]
+            by = "orthID"]
     x2a <- x2[,list(id2 = unique(strsplit(id2, ",")[[1]])),
-              by = "orthID"]
-    x2 <- merge(x2r, x2a, by = "orthID", all = T, allow.cartesian = T)  
+            by = "orthID"]
+    x2 <- merge(x2r, x2a, by = "orthID", all = T, allow.cartesian = T)
     x1[,orthID := (1:.N)+max(x2$orthID)]
+    x <- rbind(x1[,colnames(x2), with = F], x2)
+    x[,`:=`(gen1 = refID, gen2 = altID, id1 = gsub(" ", "", id1), id2 = gsub(" ", "", id2))]
+
   }
   if (nrow(x2) == 0) {
     x1[,orthID := 1:.N]
+    x = x1
+    x[,`:=`(gen1 = refID, gen2 = altID, id1 = gsub(" ", "", id1), id2 = gsub(" ", "", id2))]
+    x = x[,c(4,2,3,5,6)]
   }
-  x <- rbind(x1[,colnames(x2), with = F], x2)
-  x[,`:=`(gen1 = refID, gen2 = altID,
-          id1 = gsub(" ", "", id1), id2 = gsub(" ", "", id2))]
   return(x)
 }
 
